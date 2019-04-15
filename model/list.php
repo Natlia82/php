@@ -13,73 +13,72 @@
 	<title>FAQ</title>
 </head>
 <body>
-<header>
-	<h1>FAQ</h1>
+	<header>
+		<h1>FAQ</h1>
 
-</header>
- <a class="btn btn-primary" href="?c=book&a=admin" role="button">Войти как администратор</a>
-<section class="cd-faq">
-	<ul class="cd-faq-categories">
-		<?php //print_r($books);
-		foreach ($books as $quest) : ?>
+	</header>
+	<a class="btn btn-primary" href="?c=topic&a=admin" role="button">Войти как администратор</a>
+	<section class="cd-faq">
+		<ul class="cd-faq-categories">
+			<?php //print_r($topicss);
+			foreach ($allTopics as $quest) : ?>
 			<li><a href="#<?php $quest[0]; ?>"><?php  echo $quest[1]; ?></a></li>
 		<?php endforeach ?>
 	</ul> <!-- cd-faq-categories -->
 
 	<div class="cd-faq-items">
 		<?php //print_r( $question);
-		foreach ($books as $quest) : ?>
+		foreach ($allTopics as $quest) : ?>
 		<ul id="<?php $quest[0]; ?>" class="cd-faq-group">
 			<li class="cd-faq-title"><h2><?php  echo $quest[1]; ?></h2></li>
 			<?php foreach ( $question as $questi) :
-				  if ($quest[0] == $questi[5] and $questi[4] == 1) { ?>
-			<li>
-				<a class="cd-faq-trigger" href="#0"><?php  echo $questi[1]; ?></a>
-				<div class="cd-faq-content">
-					<p><?php echo $questi[2];?></p>
-				</div> <!-- cd-faq-content -->
-			</li>
+				if ($quest[0] == $questi[5] and $questi[4] == 1) { ?>
+					<li>
+						<a class="cd-faq-trigger" href="#0"><?php  echo $questi[1]; ?></a>
+						<div class="cd-faq-content">
+							<p><?php echo $questi[2];?></p>
+						</div> <!-- cd-faq-content -->
+					</li>
 
-		<?php } endforeach ?>
-		</ul> <!-- cd-faq-group -->
+				<?php } endforeach ?>
+			</ul> <!-- cd-faq-group -->
 
-	<?php endforeach ?>
-		</ul> <!-- cd-faq-group -->
-		<form class="" action="?c=book&a=list" method="post">
-			<button type="submit" class="btn btn-outline-success" name="but">Задать вопос</button>
-			<?php
-			 if ($_SESSION['getList']) {
-					?>
-					<div class="form-group">
-					  <label for="exampleFormControlTextarea1">Ваше имя:</label>
-				   <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="text">
-			    </div>
-					<div class="form-group">
-            <label for="exampleFormControlSelect1">Выбирите тему:</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="select">
-							<?php //print_r($books);
-							foreach ($books as $quest) : ?>
-              <option value="<?php echo $quest[0]; ?>"><?php echo $quest[1]; ?></option>
+		<?php endforeach ?>
+	</ul> <!-- cd-faq-group -->
+	<form class="" action="?c=topic&a=list" method="post">
+		<button type="submit" class="btn btn-outline-success" name="but">Задать вопос</button>
+		<?php
+		if ($_SESSION['getList']) {
+			?>
+			<div class="form-group">
+				<label for="exampleFormControlTextarea1">Ваше имя:</label>
+				<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="text">
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlSelect1">Выбирите тему:</label>
+				<select class="form-control" id="exampleFormControlSelect1" name="select">
+					<?php
+					foreach ($allTopics as $quest) : ?>
+					<option value="<?php echo $quest[0]; ?>"><?php echo $quest[1]; ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="exampleFormControlTextarea1">Ваш вопрос:</label>
+			<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textarea"></textarea>
+		</div>
+		<button type="submit" class="btn btn-outline-success" name="butinsert">Отправить</button>
+		<button type="submit" class="btn btn-outline-success" name="butcancel">Отмена</button>
+		<?php
+	}
 
-							<?php endforeach ?>
-            </select>
-          </div>
-				 <div class="form-group">
-	         <label for="exampleFormControlTextarea1">Ваш вопрос:</label>
-        	 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textarea"></textarea>
-         </div>
-				 	<button type="submit" class="btn btn-outline-success" name="butinsert">Отправить</button>
-					<button type="submit" class="btn btn-outline-success" name="butcancel">Отмена</button>
-				<?php
-			}
-
-		 ?>
-		</form>
+	?>
+</form>
 
 
-	</div> <!-- cd-faq-items -->
+</div> <!-- cd-faq-items -->
 
-	<a href="#0" class="cd-close-panel">Close</a>
+<a href="#0" class="cd-close-panel">Close</a>
 
 </section> <!-- cd-faq -->
 <script src="js/jquery-2.1.1.js"></script>
