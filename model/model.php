@@ -1,6 +1,7 @@
 <?php
 class Topic
 {
+
 	/**
 	* Получение всех тем
 	* @return array
@@ -54,13 +55,18 @@ $sth->bindValue(':name', $name, PDO::PARAM_STR);
 $sth->bindValue(':passw', $passw, PDO::PARAM_STR);
 return $sth->execute();
 }
+//функция изменения админимтсратора
+public function updadm($param)
+{
+
+}
 
 /**
 * Удаление темы
 *
 */
 public function del($id)
-{  echo $id;
+{
 	$sth = Di::get()->db()->prepare('DELETE FROM topic WHERE id = :id');
 	$sth->bindValue(':id', $id, PDO::PARAM_INT);
 	return $sth->execute();
@@ -71,7 +77,7 @@ public function del($id)
 *
 */
 public function delAdmin($id)
-{  echo $id;
+{
 	$sth = Di::get()->db()->prepare('DELETE FROM admin WHERE id = :id');
 	$sth->bindValue(':id', $id, PDO::PARAM_INT);
 	return $sth->execute();
@@ -93,9 +99,9 @@ public function findAdmin() {
 public function findAllQuestion2()
 {
 
-	$Question = Di::get()->db()->prepare('SELECT * FROM question where answer = "" ORDER BY data');
-	if ($Question->execute()) {
-		return $Question->fetchAll();
+	$question = Di::get()->db()->prepare('SELECT * FROM question where answer = "" ORDER BY data');
+	if ($question->execute()) {
+		return $question->fetchAll();
 	}
 	return false;
 
