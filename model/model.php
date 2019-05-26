@@ -124,6 +124,20 @@ public function  adminInput($log, $pas)
 }
 
 /**
+* получение информации об админе
+**/
+
+public function adminfind($id)
+{
+	$sth = Di::get()->db()->prepare("SELECT * FROM admin where id = :id ");
+	$sth->bindValue(':id', $id, PDO::PARAM_INT);
+	$sth->execute();
+	$result = $sth->fetch(PDO::FETCH_ASSOC);
+	return $result;
+}
+
+
+/**
 * Получение одного вопроса для дальнейшего редактирования
 *
 */
@@ -146,6 +160,20 @@ public function deleteQuestion($id)
 	return $sth->execute();
 }
 
+/**
+**редактирование информации о админе
+**/
+public function admUpdateQuestion($logi, $pass, $param)
+{
+	$sql =  "UPDATE admin SET login = '".$logi."', password ='".$pass."' WHERE id =".$param;
+	$sth = Di::get()->db()->prepare($sql);
+	$sth->bindValue(':id', $id, PDO::PARAM_INT);
+	return $sth->execute();
+}
+
+/**
+* редактирование вопроса
+*/
 public function updateQuestion($question, $answer, $status, $option, $autor, $id)
 {
 	$sql = "UPDATE question SET question = '".$question."', answer ='".$answer."', status= '".$status;
