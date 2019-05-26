@@ -43,8 +43,8 @@ session_start();
                     <tbody>
                         <?php foreach ($administrator as $adm): ?>
                             <tr>
-                                <td><input mane='<?php echo $adm[0]; ?>' value="<?php echo $adm[1]; ?>" ></td>
-                                <td><input mane='<?php echo  $adm[0].'pas'; ?>' value="<?php echo  $adm[2]; ?>"  ></td>
+                                <td><?php echo $adm[1]; ?></td>
+                                <td><?php echo  $adm[2]; ?></td>
                                 <td><a href="?c=admin&a=adminlist&b=updadm&id=<?= $adm[0]?>">Изменить</a></td>
                                 <td><a href="?c=admin&a=adminlist&b=deladm&id=<?= $adm[0]?>">Удалить</a></td>
                             </tr>
