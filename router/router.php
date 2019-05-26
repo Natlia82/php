@@ -71,7 +71,7 @@ elseif ($controller == 'admin') {
         }
 
     }
-    
+
     //редактирование вопроса
     elseif ($action == 'update') {
         $controllerAdmin->update($_GET['id']);
