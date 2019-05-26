@@ -94,7 +94,26 @@ class ControllerAdmin
     ***изменяем админа
     ***/
     public function updadm($param) {
-        // не могу передать значние из input
+        $topic = new Topic();
+        //отмена перенаправляем на страницу администратора
+        if (isset($_POST['cansel'])) {
+            header('Location: /index.php?c=admin&a=adminlist');
+        }
+
+        // сохраняем изменения и перенаправляем на страницу администратора
+
+        if (isset($_POST["action"])) {
+
+            //сохраняем изменения
+            $ins = $topic-> admUpdateQuestion($_POST["login"], $_POST["password"], $param);
+            header('Location: /index.php?c=admin&a=adminlist');
+        }
+
+
+        //массив с информацией о админе
+        $question = $topic->adminfind($param);
+
+        Di::get()->render('view/admupdate.php', ['question' => $question]);
     }
 
     /***
