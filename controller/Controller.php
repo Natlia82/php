@@ -7,12 +7,12 @@ class Controller
     * главная страница пользователя
     */
     public function getList()
-    {   $topic = new Topic();
+    {   $topic = new Model();
 
         //получение всех тем
-        $allTopics = $topic->findAll();
+        $allTopics = $topic->topicsAll();
         //получение всех вопросов
-        $question = $topic -> findAllQuestion();
+        $question = $topic -> questionAll();
         Di::get()->render('view/list.php', ['allTopics' => $allTopics, 'question' => $question]);
     }
 
@@ -42,8 +42,8 @@ class Controller
         if (isset($_POST['butinsert'])) {
             if (empty($_POST['text']) and empty($_POST['textarea'])) {
             } else {
-                $topic = new Topic();
-                $insertTopic = $topic->insv($_POST['text'], $_POST['textarea'], $_POST['select']);
+                $topic = new Model();
+                $insertTopic = $topic->questionInsert($_POST['text'], $_POST['textarea'], $_POST['select']);
                 unset($_SESSION['getList']);
             }
             //перенаправляем  на страницу пользователя

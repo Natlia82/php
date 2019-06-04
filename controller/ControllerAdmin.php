@@ -1,6 +1,7 @@
 <?php
 session_start();
-include 'model/model.php';
+include 'model/admin.php';
+include 'model/questions.php';
 class ControllerAdmin
 {
     /**
@@ -10,8 +11,8 @@ class ControllerAdmin
         if (isset($_POST['log']) and isset($_POST['pass'])) {
             $log = $_POST['log'];
             $pas = $_POST['pass'];
-            $admin = new Topic();
-            $admin = $admin -> adminInput($log, $pas);
+            $admin = new Admin();
+            $admin = $admin -> adminPassword($log, $pas);
 
             if (!empty($admin)) {
                 $_SESSION['variable'] = $admin[0][0];
@@ -33,7 +34,7 @@ class ControllerAdmin
         if (empty($_SESSION['variable'])) {
             header('Location: /');
         } else {
-            $topic = new Topic();
+            $topic = new Admin();
 
             //добавить администратора при нажатие открываются поля для ввода при повторном нажатие поля не видны
             if (isset($_POST["newadmin"])) {
@@ -45,20 +46,20 @@ class ControllerAdmin
             }
 
             //массив всех тем
-            $topics = $topic->findAll();
+            $topics = $topic->topicsAll();
             //массив всех вопросов
-            $question = $topic -> findAllQuestion();
+            $question = $topic -> QuestionAll();
             //массив всех админов
-            $administrator = $topic -> findAdmin();
+            $administrator = $topic -> AdminAll();
             //если выбран чекбокс показывать без ответа
             if ($_POST["checkbox"] == on) {
                 //  echo "мы и тут";
                 $_SESSION["checkbox"] = "checked='checke'";
                 // массив всех вопросов без ответа отсортированных по дате
-                $question = $topic -> findAllQuestion2();
+                $question = $topic -> QuestionAllSorted();
             } else {
                 $_SESSION["checkbox"] = "";
-                $question = $topic -> findAllQuestion();
+                $question = $topic -> QuestionAll();
             }
             Di::get()->render('view/adminlist.php', ['topics' => $topics, 'question' => $question, 'administrator' => $administrator ]);
         }
@@ -68,10 +69,10 @@ class ControllerAdmin
     *  удаление администратора
     ****/
     public function admindel($param) {
-        $topic = new Topic();
+        $topic = new Admin();
         //удаление админив
         if ($param !== null) {
-            $del = $topic -> delAdmin($param);
+            $del = $topic -> AdminDelete($param);
         }
         // перенаправляем на главную стр администратира
         header('Location: /index.php?c=admin&a=adminlist');
@@ -81,7 +82,7 @@ class ControllerAdmin
     ****добавляем администратора
     ****/
     public function adminadd() {
-        $topic = new Topic();
+        $topic = new Admin();
         //сохраняем
         $ins = $topic-> addadmin($_POST["login"], $_POST["passw"]);
         unset($_SESSION["newadmin"]);
@@ -94,7 +95,7 @@ class ControllerAdmin
     ***изменяем админа
     ***/
     public function updadm($param) {
-        $topic = new Topic();
+        $topic = new Admin();
         //отмена перенаправляем на страницу администратора
         if (isset($_POST['cansel'])) {
             header('Location: /index.php?c=admin&a=adminlist');
@@ -105,7 +106,7 @@ class ControllerAdmin
         if (isset($_POST["action"])) {
 
             //сохраняем изменения
-            $ins = $topic-> admUpdateQuestion($_POST["login"], $_POST["password"], $param);
+            $ins = $topic-> adminUpdate($_POST["login"], $_POST["password"], $param);
             header('Location: /index.php?c=admin&a=adminlist');
         }
 
@@ -139,8 +140,8 @@ class ControllerAdmin
         }
         //сохраняем новую тему
         if (isset($_POST["save"])) {
-            $topic = new Topic();
-            $ins = $topic-> add($_POST["newtema"]);
+            $topic = new Admin();
+            $ins = $topic-> topicsAdd($_POST["newtema"]);
             unset($_SESSION["new"]);
             // перенаправляем на главную страницу админа
             header('Location: /index.php?c=admin&a=adminlist');
@@ -172,7 +173,7 @@ class ControllerAdmin
         }
         //удаление темы
         if (isset($_POST["del"])) {
-            $topic = new Topic();
+            $topic = new Admin();
             $del = $topic -> del($_POST["option"]);
             unset($_SESSION["delet"]);
             // перенаправляем на главную страницу админа
@@ -186,7 +187,7 @@ class ControllerAdmin
     *Удаление вопроса
     **/
     public function delet($param) {
-        $topic = new Topic();
+        $topic = new Questions();
         if (!empty($param)) {
             $delete = $topic -> deleteQuestion($param);
         }
@@ -198,7 +199,7 @@ class ControllerAdmin
     */
     public function update($params)
     {
-        $topic = new Topic();
+        $topic = new Questions();
         //отмена перенаправляем на страницу администратора
         if (isset($_POST['submit2'])) {
             header('Location: /index.php?c=admin&a=adminlist');
@@ -223,9 +224,9 @@ class ControllerAdmin
         }
 
         //массив с информацией о вопросе
-        $question = $topic->find($params);
+        $question = $topic->Questionsfind($params);
         //массив всех тем
-        $topics = $topic->findAll();
+        $topics = $topic->topicsAll();
         Di::get()->render('view/update.php', ['question' => $question, 'topics' => $topics]);
 
     }
